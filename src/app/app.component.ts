@@ -41,12 +41,16 @@ export class AppComponent implements OnInit {
     this.audioUris = (await this.apiService.getDiachronicVersionsAudio(song));
     this.audioUris = this.audioUris.map(a =>
       encodeURI('http://localhost:8060/audiochunk?filename='+a));
-    //this.dj.playDjSet(this.audioUris.slice(0,1), 12, true); //bars per song, cue point auto*/
-    this.nextImage();
+    this.dj.playDjSet(this.audioUris, 12, true); //bars per song, cue point auto*/
+    this.dj.getTransitionObservable().subscribe(transition => {
+      if (transition && transition.names) {
+        this.nextImage(transition.names[0]);
+      }
+    });
   }
 
-  async nextImage() {
-    const info = await this.apiService.getEventInfo(this.audioUris[this.currentImagesIndex]);
+  async nextImage(audioUri: string) {
+    const info = await this.apiService.getEventInfo(audioUri);
     let infoStrings = [info['date']];
     if (info['venue']) infoStrings.push(info['venue']);
     if (info['location']) infoStrings.push(info['location']);
@@ -55,12 +59,6 @@ export class AppComponent implements OnInit {
     this.currentImages[i] = info['images'] ? info['images'][0] : undefined;
     setTimeout(() => this.toggleState(), 500); //images take time to load!
   }
-
-  onClick() {
-    this.nextImage();
-  }
-
-  onDone() { }
 
   toggleState() {
     this.imageStates.forEach((s,i) => this.imageStates[i] = s === 'in' ? 'out' : 'in');
