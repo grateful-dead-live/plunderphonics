@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+
+h1, h2, h3, body {
+  font-family: Avenir Next;
+  font-size: 25px;
+  text-align: center;
+  font-weight: 300;
+  color: #BBBBBB;
+}
+
+h1 { font-size: 200%; }
+h2 { font-size: 130%; }
+
+.background {
+  background-color: black;
+  background-image: url('https://i.ytimg.com/vi/oMGUQTK8tXw/maxresdefault.jpg');
+  background-size: cover;
+  height: 100vh;
+}
+
+.images {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  width: 400;
+  margin: 10px auto;
+  position: absolute;
+}

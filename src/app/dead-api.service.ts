@@ -63,6 +63,10 @@ export class DeadApiService {
     return this.getJsonFromApi('diachronic?songname='+encodeURIComponent(songName));
   }
 
+  getEventInfo(audioUri: string): Promise<string[]> {
+    return this.getJsonFromApi('eventinfo?audiouri='+encodeURIComponent(audioUri));
+  }
+
   getJsonFromApi(path: string): Promise<any> {
     return fetch(this.API_URL+path)
       .then(r => r.text())
