@@ -6,12 +6,10 @@ export interface DeadEvent {
   location: string
 }
 
+export const API_URL = "http://localhost:8060/"//"https://grateful-dead-api.herokuapp.com/";//"http://localhost:8060/";
 
 @Injectable()
 export class DeadApiService {
-
-  private API_URL = "http://localhost:8060/"//"https://grateful-dead-api.herokuapp.com/";//"http://localhost:8060/";
-  //private API_URL = "http://localhost:8060/";
 
   constructor() {}
 
@@ -59,8 +57,9 @@ export class DeadApiService {
     return this.getJsonFromApi('featuresummary?audiouri='+encodeURIComponent(audioUri));
   }
 
-  getDiachronicVersionsAudio(songName: string): Promise<string[]> {
-    return this.getJsonFromApi('diachronic?songname='+encodeURIComponent(songName));
+  getDiachronicVersionsAudio(songName: string, count = 100, skip = 0): Promise<string[]> {
+    return this.getJsonFromApi('diachronic?songname='+encodeURIComponent(songName)
+      +"&count="+count+"&skip="+skip);
   }
 
   getEventInfo(audioUri: string): Promise<string[]> {
@@ -68,7 +67,7 @@ export class DeadApiService {
   }
 
   getJsonFromApi(path: string): Promise<any> {
-    return fetch(this.API_URL+path)
+    return fetch(API_URL+path)
       .then(r => r.text())
       .then(t => JSON.parse(t))
       .catch(e => console.log(e));

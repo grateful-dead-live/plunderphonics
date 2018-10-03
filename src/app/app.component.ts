@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Component, OnInit } from '@angular/core';
-import { DeadApiService } from './dead-api.service';
+import { DeadApiService, API_URL } from './dead-api.service';
 import { DeadFeatureService } from './dead-feature.service';
 import { AutoDj, DecisionType, TransitionType } from 'auto-dj';
 import { trigger, style, animate, transition, state } from '@angular/animations';
@@ -21,7 +21,9 @@ import { trigger, style, animate, transition, state } from '@angular/animations'
 })
 export class AppComponent implements OnInit {
 
-  private SONGNAME = 'Goodlovin';
+  private SONGNAME = 'Me and My Uncle';
+  private COUNT = 50;
+  private SKIP = 2;
   private audioUris: string[];
   private dj: AutoDj;
   protected currentImages: string[] = [null, null];
@@ -38,9 +40,9 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     await this.dj.isReady();
     const song = _.toLower(this.SONGNAME).split(' ').join('');
-    this.audioUris = (await this.apiService.getDiachronicVersionsAudio(song));
+    this.audioUris = (await this.apiService.getDiachronicVersionsAudio(song, this.COUNT, this.SKIP));
     this.audioUris = this.audioUris.map(a =>
-      encodeURI('http://localhost:8060/audiochunk?filename='+a));
+      encodeURI(API_URL+'audiochunk?filename='+a));
     this.dj.playDjSet(this.audioUris, 12, true); //bars per song, cue point auto*/
     this.dj.getTransitionObservable().subscribe(transition => {
       if (transition && transition.names) {
@@ -57,7 +59,7 @@ export class AppComponent implements OnInit {
     const i = this.currentImagesIndex % 2;
     this.currentCaptions[i] = infoStrings.join(', ');
     this.currentImages[i] = info['images'] ? info['images'][0] : undefined;
-    setTimeout(() => this.toggleState(), 500); //images take time to load!
+    setTimeout(() => this.toggleState(), 1000); //images take time to load!
   }
 
   toggleState() {
