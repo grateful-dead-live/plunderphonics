@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/* You can add global styles to this file, and also import other style files */\n\nh1, h2, h3, body {\n  font-family: Avenir Next;\n  font-size: 25px;\n  text-align: center;\n  font-weight: 300;\n  color: #BBBBBB;\n}\n\nh1 { font-size: 200%; }\n\nh2 { font-size: 130%; }\n\n.background {\n  background-color: black;\n  background-image: url('https://i.ytimg.com/vi/oMGUQTK8tXw/maxresdefault.jpg');\n  background-size: cover;\n  height: 100vh;\n}\n\n.images {\n  height: 50vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.image {\n  width: 400;\n  margin: 10px auto;\n  position: absolute;\n}"
+module.exports = "/* You can add global styles to this file, and also import other style files */\n\nh1, h2, h3, body {\n  font-family: Avenir Next;\n  font-size: 25px;\n  text-align: center;\n  font-weight: 300;\n  color: #BBBBBB;\n  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n}\n\nh1 { font-size: 200%; }\n\nh2 { font-size: 130%; }\n\nimg { padding:10px; opacity:1; max-width: 30%; max-height: 30%; }\n\n.background {\n  background-color: black;\n  background-image: url('https://i.ytimg.com/vi/oMGUQTK8tXw/maxresdefault.jpg');\n  background-size: cover;\n  height: 100vh;\n}\n\n.images {\n  height: 50vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.image {\n  width: 400;\n  margin: 10px auto;\n  position: absolute;\n}"
 
 /***/ }),
 

@@ -88,7 +88,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<br>\n<h1>{{ SONGNAME }}</h1>\n<div class=\"images\">\n  <span class=\"z-depth image\" flex=\"50\"\n      [hidden]=\"!currentImages[0]\" [@fade]=\"imageStates[0]\">\n    <h2>{{ currentCaptions[0] }}</h2>\n    <img [src]=\"currentImages[0]\" height=\"300\" />\n  </span>\n  <span class=\"z-depth image\" flex=\"50\"\n      [hidden]=\"!currentImages[1]\" [@fade]=\"imageStates[1]\">\n    <h2>{{ currentCaptions[1] }}</h2>\n    <img [src]=\"currentImages[1]\" height=\"300\" />\n  </span>\n</div>"
+module.exports = "<br>\n<h1>{{ SONGNAME }}</h1>\n<div class=\"images\">\n  <span class=\"z-depth image\" flex=\"50\"\n      [hidden]=\"!currentImages[0]\" [@fade]=\"imageStates[0]\">\n    <h2>{{ currentCaptions[0] }}</h2>\n    <img *ngFor=\"let i of currentImages[0]\" [src]=\"i\" />\n  </span>\n  <span class=\"z-depth image\" flex=\"50\"\n      [hidden]=\"!currentImages[1]\" [@fade]=\"imageStates[1]\">\n    <h2>{{ currentCaptions[1] }}</h2>\n    <img *ngFor=\"let i of currentImages[1]\" [src]=\"i\" />\n  </span>\n</div>"
 
 /***/ }),
 
@@ -160,12 +160,16 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+var TEST = ['https://images-na.ssl-images-amazon.com/images/I/91PMUsUyKzL._SL1500_.jpg',
+    'https://images.fineartamerica.com/images-medium-large-5/grateful-dead-fantasy-amanda-paul.jpg',
+    'https://i.ebayimg.com/images/g/alAAAOSw4A5Y2eI9/s-l300.jpg'
+];
 var AppComponent = /** @class */ (function () {
     function AppComponent(apiService, featureService) {
         this.apiService = apiService;
-        this.SONGNAME = 'Me and My Uncle';
+        this.SONGNAME = 'Goodlovin';
         this.COUNT = 50;
-        this.SKIP = 2;
+        this.SKIP = 3;
         this.currentImages = [null, null];
         this.currentCaptions = ['', ''];
         this.imageStates = ['out', 'in'];
@@ -216,7 +220,7 @@ var AppComponent = /** @class */ (function () {
                             infoStrings.push(info['location']);
                         i = this.currentImagesIndex % 2;
                         this.currentCaptions[i] = infoStrings.join(', ');
-                        this.currentImages[i] = info['images'] ? info['images'][0] : undefined;
+                        this.currentImages[i] = info['images'] ? info['images'].slice(0, 3) : undefined;
                         setTimeout(function () { return _this.toggleState(); }, 1000); //images take time to load!
                         return [2 /*return*/];
                 }
