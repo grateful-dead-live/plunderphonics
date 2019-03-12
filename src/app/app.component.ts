@@ -4,6 +4,8 @@ import { DeadApiService, API_URL } from './dead-api.service';
 import { DeadFeatureService } from './dead-feature.service';
 import { AutoDj, DecisionType, TransitionType } from 'auto-dj';
 import { trigger, style, animate, transition, state } from '@angular/animations';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -21,7 +23,12 @@ import { trigger, style, animate, transition, state } from '@angular/animations'
 })
 export class AppComponent implements OnInit {
 
-  private SONGNAME = 'Me and My Uncle';
+  //private SONGNAME = 'Me and My Uncle';
+  //private SONGNAME = 'Sugar Magnolia';
+  //private SONGNAME = 'Playing in the Band';
+  //private SONGNAME = 'Jack Straw';
+  //private SONGNAME = 'Truckin';
+  private SONGNAME;
   private COUNT = 50;
   private SKIP = 2;
   private audioUris: string[];
@@ -32,9 +39,16 @@ export class AppComponent implements OnInit {
   protected currentImagesIndex = 0;
 
   constructor(private apiService: DeadApiService,
-      featureService: DeadFeatureService) {
+      featureService: DeadFeatureService, private activatedRoute: ActivatedRoute) {
     this.dj = new AutoDj(featureService, DecisionType.Default, undefined,
       TransitionType.Beatmatch);
+      this.activatedRoute.queryParams.subscribe(params => {
+        this.SONGNAME = params['song'];
+        console.log(this.SONGNAME); // Print the parameter to the console.
+
+    });
+
+
   }
 
   async ngOnInit() {
@@ -66,5 +80,6 @@ export class AppComponent implements OnInit {
     this.imageStates.forEach((s,i) => this.imageStates[i] = s === 'in' ? 'out' : 'in');
     this.currentImagesIndex++;
   }
+
 
 }

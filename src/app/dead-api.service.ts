@@ -6,7 +6,8 @@ export interface DeadEvent {
   location: string
 }
 
-export const API_URL = "http://localhost:8060/"//"https://grateful-dead-api.herokuapp.com/";//"http://localhost:8060/";
+export const API_URL = "https://grateful-dead-api.herokuapp.com/";
+//export const API_URL = "http://localhost:8060/";
 
 @Injectable()
 export class DeadApiService {
