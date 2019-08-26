@@ -6,10 +6,13 @@ h1, h2, h3, body {
   text-align: center;
   font-weight: 300;
   color: #BBBBBB;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 h1 { font-size: 200%; }
 h2 { font-size: 130%; }
+
+img { padding:10px; opacity:1; max-width: 30%; max-height: 30%; }
 
 .background {
   background-color: black;

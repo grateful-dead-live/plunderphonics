@@ -5,6 +5,11 @@ import { DeadFeatureService } from './dead-feature.service';
 import { AutoDj, DecisionType, TransitionType } from 'auto-dj';
 import { trigger, style, animate, transition, state } from '@angular/animations';
 
+const TEST = ['https://images-na.ssl-images-amazon.com/images/I/91PMUsUyKzL._SL1500_.jpg',
+'https://images.fineartamerica.com/images-medium-large-5/grateful-dead-fantasy-amanda-paul.jpg',
+'https://i.ebayimg.com/images/g/alAAAOSw4A5Y2eI9/s-l300.jpg'
+]
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -21,12 +26,12 @@ import { trigger, style, animate, transition, state } from '@angular/animations'
 })
 export class AppComponent implements OnInit {
 
-  private SONGNAME = 'Me and My Uncle';
+  private SONGNAME = 'Goodlovin';
   private COUNT = 50;
-  private SKIP = 2;
+  private SKIP = 3;
   private audioUris: string[];
   private dj: AutoDj;
-  protected currentImages: string[] = [null, null];
+  protected currentImages: string[][] = [null, null];
   protected currentCaptions: string[] = ['', ''];
   protected imageStates: string[] = ['out', 'in']
   protected currentImagesIndex = 0;
@@ -58,7 +63,7 @@ export class AppComponent implements OnInit {
     if (info['location']) infoStrings.push(info['location']);
     const i = this.currentImagesIndex % 2;
     this.currentCaptions[i] = infoStrings.join(', ');
-    this.currentImages[i] = info['images'] ? info['images'][0] : undefined;
+    this.currentImages[i] = info['images'] ? info['images'].slice(0,3) : undefined;
     setTimeout(() => this.toggleState(), 1000); //images take time to load!
   }
 
