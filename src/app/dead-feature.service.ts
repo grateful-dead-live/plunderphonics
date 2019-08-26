@@ -10,15 +10,20 @@ export class DeadFeatureService implements FeatureService {
   constructor(private apiService: DeadApiService) {}
 
   async getBeats(audioUri: string) {
-    return (await this.getFeatures(audioUri))["beats"];
+    return this.getFeature(audioUri, "beats");
   }
 
   async getKeys(audioUri: string) {
-    return (await this.getFeatures(audioUri))["key"];
+    return this.getFeature(audioUri, "key");
   }
 
   async getLoudnesses(audioUri: string) {
-    return (await this.getFeatures(audioUri))["loudness"];
+    return this.getFeature(audioUri, "loudness");
+  }
+  
+  private async getFeature(audioUri: string, featureName: string) {
+    const features = await this.getFeatures(audioUri);
+    if (features) return features[featureName];
   }
 
   private async getFeatures(audioUri: string): Promise<{}> {

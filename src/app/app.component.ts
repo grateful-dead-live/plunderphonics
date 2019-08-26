@@ -1,10 +1,11 @@
 import * as _ from 'lodash';
 import { Component, OnInit } from '@angular/core';
-import { DeadApiService, API_URL } from './dead-api.service';
-import { DeadFeatureService } from './dead-feature.service';
-import { AutoDj, DecisionType, TransitionType } from 'auto-dj';
-import { trigger, style, animate, transition, state } from '@angular/animations';
 import { ActivatedRoute } from '@angular/router';
+import { trigger, style, animate, transition, state } from '@angular/animations';
+import { AutoDj, DecisionType, TransitionType } from 'auto-dj';
+import { DeadApiService } from './dead-api.service';
+import { DeadFeatureService } from './dead-feature.service';
+import { SongDetails, DeadEventInfo } from './types';
 
 
 const TEST = ['https://images-na.ssl-images-amazon.com/images/I/91PMUsUyKzL._SL1500_.jpg',
@@ -33,11 +34,12 @@ export class AppComponent implements OnInit {
   //private SONGNAME = 'Playing in the Band';
   //private SONGNAME = 'Jack Straw';
   //private SONGNAME = 'Truckin';
+  private eventInfos: DeadEventInfo[];
   private SONGNAME;
   private COUNT = 50;
   private SKIP = 3;
-  private audioUris: string[];
   private dj: AutoDj;
+  protected songDetails: SongDetails;
   protected currentImages: string[][] = [null, null];
   protected currentCaptions: string[] = ['', ''];
   protected imageStates: string[] = ['out', 'in']
@@ -45,12 +47,11 @@ export class AppComponent implements OnInit {
 
   constructor(private apiService: DeadApiService,
       featureService: DeadFeatureService, private activatedRoute: ActivatedRoute) {
-    this.dj = new AutoDj(featureService, DecisionType.Default, undefined,
-      TransitionType.Beatmatch);
+    this.dj = new AutoDj(null, DecisionType.Default, undefined,
+      TransitionType.Crossfade);
       this.activatedRoute.queryParams.subscribe(params => {
-        this.SONGNAME = params['song'];
+        this.SONGNAME = params['song'] || 'Looks Like Rain';
         console.log(this.SONGNAME); // Print the parameter to the console.
-
     });
 
 
@@ -58,26 +59,31 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     await this.dj.isReady();
-    const song = _.toLower(this.SONGNAME).split(' ').join('');
-    this.audioUris = (await this.apiService.getDiachronicVersionsAudio(song, this.COUNT, this.SKIP));
-    this.audioUris = this.audioUris.map(a =>
-      encodeURI(API_URL+'audiochunk?filename='+a));
-    this.dj.playDjSet(this.audioUris, 12, true); //bars per song, cue point auto*/
+    this.eventInfos = await this.apiService.getEvents();
+    //const song = _.toLower(this.SONGNAME).split(' ').join('');
+    this.songDetails = await this.apiService
+      .getDiachronicSongDetails(this.SONGNAME, this.COUNT, this.SKIP);
+    const audioUris = _.values(_.mapValues(this.songDetails.audio,
+      (a,r) => this.apiService.toChunkUri(r, a[0].filename)));
+    this.dj.playDjSet(audioUris, 12, true); //bars per song, cue point auto*/
+    //this.dj.transitionToTrack(audioUris[0]);
+    let index = 0;
     this.dj.getTransitionObservable().subscribe(transition => {
       if (transition && transition.names) {
-        this.nextImage(transition.names[0]);
+        this.nextImage(this.songDetails.eventIds[index]);
+        index++;
       }
     });
   }
 
-  async nextImage(audioUri: string) {
-    const info = await this.apiService.getEventInfo(audioUri);
-    let infoStrings = [info['date']];
-    if (info['venue']) infoStrings.push(info['venue']);
-    if (info['location']) infoStrings.push(info['location']);
+  async nextImage(eventId: string) {
+    const info = this.eventInfos.filter(e => e.id === eventId)[0];
+    let infoStrings = [info.date];
+    if (info.venue) infoStrings.push(info.venue);
+    if (info.location) infoStrings.push(info.location);
     const i = this.currentImagesIndex % 2;
     this.currentCaptions[i] = infoStrings.join(', ');
-    this.currentImages[i] = info['images'] ? info['images'].slice(0,3) : undefined;
+    this.currentImages[i] = [info.ticket, info.poster, info.photo];
     setTimeout(() => this.toggleState(), 1000); //images take time to load!
   }
 
