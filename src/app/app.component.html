@@ -3,12 +3,12 @@
 <div class="images">
   <span class="z-depth image" flex="50"
       [hidden]="!currentImages[0]" [@fade]="imageStates[0]">
-    <h2>{{ currentCaptions[0] }}</h2>
     <img *ngFor="let i of currentImages[0]" [src]="i" />
+    <h2>{{ currentCaptions[0] }}</h2>
   </span>
   <span class="z-depth image" flex="50"
       [hidden]="!currentImages[1]" [@fade]="imageStates[1]">
-    <h2>{{ currentCaptions[1] }}</h2>
     <img *ngFor="let i of currentImages[1]" [src]="i" />
+    <h2>{{ currentCaptions[1] }}</h2>
   </span>
 </div>

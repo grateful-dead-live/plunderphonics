@@ -36,8 +36,10 @@ export class AppComponent implements OnInit {
   //private SONGNAME = 'Truckin';
   private eventInfos: DeadEventInfo[];
   private SONGNAME;
-  private COUNT = 50;
-  private SKIP = 3;
+  private COUNT = 30;
+  private SKIP = 2;
+  private CHUNK_LENGTH = 60;
+  private CHUNK_START = 30;
   private dj: AutoDj;
   protected songDetails: SongDetails;
   protected currentImages: string[][] = [null, null];
@@ -48,7 +50,7 @@ export class AppComponent implements OnInit {
   constructor(private apiService: DeadApiService,
       featureService: DeadFeatureService, private activatedRoute: ActivatedRoute) {
     this.dj = new AutoDj(null, DecisionType.Default, undefined,
-      TransitionType.Crossfade);
+      TransitionType.Beatmatch);
       this.activatedRoute.queryParams.subscribe(params => {
         this.SONGNAME = params['song'] || 'Looks Like Rain';
         console.log(this.SONGNAME); // Print the parameter to the console.
@@ -64,11 +66,13 @@ export class AppComponent implements OnInit {
     this.songDetails = await this.apiService
       .getDiachronicSongDetails(this.SONGNAME, this.COUNT, this.SKIP);
     const audioUris = _.values(_.mapValues(this.songDetails.audio,
-      (a,r) => this.apiService.toChunkUri(r, a[0].filename)));
-    this.dj.playDjSet(audioUris, 12, true); //bars per song, cue point auto*/
+      (a,r) => this.apiService.toChunkUri(r, a[0].filename, this.CHUNK_START,
+        this.CHUNK_START+this.CHUNK_LENGTH)));
+    this.dj.playDjSet(audioUris, 12, true, 6); //bars per song, cue point auto*/
     //this.dj.transitionToTrack(audioUris[0]);
-    let index = 0;
+    let index = 1;
     this.dj.getTransitionObservable().subscribe(transition => {
+      console.log(transition)
       if (transition && transition.names) {
         this.nextImage(this.songDetails.eventIds[index]);
         index++;
@@ -78,12 +82,14 @@ export class AppComponent implements OnInit {
 
   async nextImage(eventId: string) {
     const info = this.eventInfos.filter(e => e.id === eventId)[0];
+    const details = await this.apiService.getEventDetails(eventId);
     let infoStrings = [info.date];
     if (info.venue) infoStrings.push(info.venue);
     if (info.location) infoStrings.push(info.location);
     const i = this.currentImagesIndex % 2;
     this.currentCaptions[i] = infoStrings.join(', ');
-    this.currentImages[i] = [info.ticket, info.poster, info.photo];
+    this.currentImages[i] = [info.ticket, info.poster, info.photo,
+      details.venue.thumbnail, details.location.thumbnail].filter(i=>i);
     setTimeout(() => this.toggleState(), 1000); //images take time to load!
   }
 
@@ -91,6 +97,5 @@ export class AppComponent implements OnInit {
     this.imageStates.forEach((s,i) => this.imageStates[i] = s === 'in' ? 'out' : 'in');
     this.currentImagesIndex++;
   }
-
 
 }

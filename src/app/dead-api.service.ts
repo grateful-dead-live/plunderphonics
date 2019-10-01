@@ -58,9 +58,11 @@ export class DeadApiService {
       +"&count="+count+"&skip="+skip);
   }
   
-  toChunkUri(recordingId: string, filename: string) {
-    const uri = this.ARCHIVE_URI+recordingId+'/'+filename;
-    return encodeURI(this.API_URL+'audiochunk?filename='+uri);
+  toChunkUri(recordingId: string, filename: string, fromSecond?: number, toSecond?: number) {
+    const audioUri = this.ARCHIVE_URI+recordingId+'/'+filename;
+    const segmentDef = fromSecond != null && toSecond != null ?
+      '&fromsecond='+fromSecond+'&tosecond='+toSecond : '';
+    return encodeURI(this.API_URL+'audiochunk?filename='+audioUri+segmentDef);
   }
 
   async getJsonFromApi(path: string): Promise<any> {
