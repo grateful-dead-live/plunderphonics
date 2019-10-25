@@ -40,4 +40,4 @@ Thumbs.db
 
 package-lock.json
 
-src/assets/box*
+src/assets/*.json
