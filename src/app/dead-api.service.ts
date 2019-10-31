@@ -64,6 +64,10 @@ export class DeadApiService {
       '&fromsecond='+fromSecond+'&tosecond='+toSecond : '';
     return encodeURI(this.API_URL+'audiochunk?filename='+audioUri+segmentDef);
   }
+  
+  toLmaUri(recordingId: string, filename: string) {
+    return this.ARCHIVE_URI+recordingId+'/'+filename;
+  }
 
   async getJsonFromApi(path: string): Promise<any> {
     return fetch(this.API_URL+path)

@@ -6,15 +6,15 @@ export class LiveFeatureService implements FeatureService {
 
   private features = new Map<string, {}>();
 
-  async getBeats(audioUri: string) {
+  getBeats(audioUri: string) {
     return this.getFeature(audioUri, "beats");
   }
 
-  async getKeys(audioUri: string) {
+  getKeys(audioUri: string) {
     return this.getFeature(audioUri, "key");
   }
 
-  async getLoudnesses(audioUri: string) {
+  getLoudnesses(audioUri: string) {
     return this.getFeature(audioUri, "loudness");
   }
   
