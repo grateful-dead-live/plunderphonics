@@ -1,13 +1,13 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["styles"],{
 
-/***/ "./node_modules/raw-loader/index.js!./node_modules/postcss-loader/lib/index.js?!./src/styles.css":
-/*!**********************************************************************************************!*\
-  !*** ./node_modules/raw-loader!./node_modules/postcss-loader/lib??embedded!./src/styles.css ***!
-  \**********************************************************************************************/
+/***/ "./node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!./node_modules/postcss-loader/src/index.js?!./src/styles.css":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!./node_modules/postcss-loader/src??embedded!./src/styles.css ***!
+  \*****************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/* You can add global styles to this file, and also import other style files */\n\nh1, h2, h3, body {\n  font-family: Avenir Next;\n  font-size: 25px;\n  text-align: center;\n  font-weight: 300;\n  color: #BBBBBB;\n  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n}\n\nh1 { font-size: 200%; }\n\nh2 { font-size: 130%; }\n\nimg { padding:10px; opacity:1; max-width: 30%; max-height: 30%; }\n\n.background {\n  background-color: black;\n  background-image: url('https://i.ytimg.com/vi/oMGUQTK8tXw/maxresdefault.jpg');\n  background-size: cover;\n  height: 100vh;\n}\n\n.images {\n  height: 50vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.image {\n  width: 400;\n  margin: 10px auto;\n  position: absolute;\n}"
+module.exports = [[module.i, "/* You can add global styles to this file, and also import other style files */\n\nh1, h2, h3, body {\n  font-family: Avenir Next;\n  font-size: 25px;\n  text-align: center;\n  font-weight: 300;\n  color: #BBBBBB;\n  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;\n}\n\nh1 { font-size: 200%; }\n\nh2 { font-size: 130%; }\n\nimg { padding:10px; opacity:1; max-width: 30%; max-height: 30%; }\n\n.background {\n  background-color: black;\n  background-image: url('https://i.ytimg.com/vi/oMGUQTK8tXw/maxresdefault.jpg');\n  background-size: cover;\n  height: 100vh;\n}\n\n.images {\n  height: 50vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.image {\n  width: 400;\n  margin: 10px auto;\n  position: absolute;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9zdHlsZXMuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLDhFQUE4RTs7QUFFOUU7RUFDRSx3QkFBd0I7RUFDeEIsZUFBZTtFQUNmLGtCQUFrQjtFQUNsQixnQkFBZ0I7RUFDaEIsY0FBYztFQUNkLGlFQUFpRTtBQUNuRTs7QUFFQSxLQUFLLGVBQWUsRUFBRTs7QUFDdEIsS0FBSyxlQUFlLEVBQUU7O0FBRXRCLE1BQU0sWUFBWSxFQUFFLFNBQVMsRUFBRSxjQUFjLEVBQUUsZUFBZSxFQUFFOztBQUVoRTtFQUNFLHVCQUF1QjtFQUN2Qiw2RUFBNkU7RUFDN0Usc0JBQXNCO0VBQ3RCLGFBQWE7QUFDZjs7QUFFQTtFQUNFLFlBQVk7RUFDWixhQUFhO0VBQ2IsdUJBQXVCO0VBQ3ZCLG1CQUFtQjtBQUNyQjs7QUFFQTtFQUNFLFVBQVU7RUFDVixpQkFBaUI7RUFDakIsa0JBQWtCO0FBQ3BCIiwiZmlsZSI6InNyYy9zdHlsZXMuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLyogWW91IGNhbiBhZGQgZ2xvYmFsIHN0eWxlcyB0byB0aGlzIGZpbGUsIGFuZCBhbHNvIGltcG9ydCBvdGhlciBzdHlsZSBmaWxlcyAqL1xuXG5oMSwgaDIsIGgzLCBib2R5IHtcbiAgZm9udC1mYW1pbHk6IEF2ZW5pciBOZXh0O1xuICBmb250LXNpemU6IDI1cHg7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgZm9udC13ZWlnaHQ6IDMwMDtcbiAgY29sb3I6ICNCQkJCQkI7XG4gIHRleHQtc2hhZG93OiAtMXB4IDAgYmxhY2ssIDAgMXB4IGJsYWNrLCAxcHggMCBibGFjaywgMCAtMXB4IGJsYWNrO1xufVxuXG5oMSB7IGZvbnQtc2l6ZTogMjAwJTsgfVxuaDIgeyBmb250LXNpemU6IDEzMCU7IH1cblxuaW1nIHsgcGFkZGluZzoxMHB4OyBvcGFjaXR5OjE7IG1heC13aWR0aDogMzAlOyBtYXgtaGVpZ2h0OiAzMCU7IH1cblxuLmJhY2tncm91bmQge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiBibGFjaztcbiAgYmFja2dyb3VuZC1pbWFnZTogdXJsKCdodHRwczovL2kueXRpbWcuY29tL3ZpL29NR1VRVEs4dFh3L21heHJlc2RlZmF1bHQuanBnJyk7XG4gIGJhY2tncm91bmQtc2l6ZTogY292ZXI7XG4gIGhlaWdodDogMTAwdmg7XG59XG5cbi5pbWFnZXMge1xuICBoZWlnaHQ6IDUwdmg7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICBhbGlnbi1pdGVtczogY2VudGVyO1xufVxuXG4uaW1hZ2Uge1xuICB3aWR0aDogNDAwO1xuICBtYXJnaW46IDEwcHggYXV0bztcbiAgcG9zaXRpb246IGFic29sdXRlO1xufSJdfQ== */", '', '']]
 
 /***/ }),
 
@@ -43,14 +43,17 @@ var isOldIE = memoize(function () {
 	return window && document && document.all && !window.atob;
 });
 
-var getTarget = function (target) {
+var getTarget = function (target, parent) {
+  if (parent){
+    return parent.querySelector(target);
+  }
   return document.querySelector(target);
 };
 
 var getElement = (function (fn) {
 	var memo = {};
 
-	return function(target) {
+	return function(target, parent) {
                 // If passing function in options, then use it for resolve "head" element.
                 // Useful for Shadow Root style i.e
                 // {
@@ -60,7 +63,7 @@ var getElement = (function (fn) {
                         return target();
                 }
                 if (typeof memo[target] === "undefined") {
-			var styleTarget = getTarget.call(this, target);
+			var styleTarget = getTarget.call(this, target, parent);
 			// Special case to return head of iframe instead of iframe itself
 			if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
 				try {
@@ -201,7 +204,7 @@ function insertStyleElement (options, style) {
 	} else if (options.insertAt === "bottom") {
 		target.appendChild(style);
 	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
-		var nextSibling = getElement(options.insertInto + " " + options.insertAt.before);
+		var nextSibling = getElement(options.insertAt.before, target);
 		target.insertBefore(style, nextSibling);
 	} else {
 		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
@@ -223,6 +226,13 @@ function createStyleElement (options) {
 
 	if(options.attrs.type === undefined) {
 		options.attrs.type = "text/css";
+	}
+
+	if(options.attrs.nonce === undefined) {
+		var nonce = getNonce();
+		if (nonce) {
+			options.attrs.nonce = nonce;
+		}
 	}
 
 	addAttrs(style, options.attrs);
@@ -251,12 +261,20 @@ function addAttrs (el, attrs) {
 	});
 }
 
+function getNonce() {
+	if (false) {}
+
+	return __webpack_require__.nc;
+}
+
 function addStyle (obj, options) {
 	var style, update, remove, result;
 
 	// If a transform function was defined, run it on the css
 	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
+	    result = typeof options.transform === 'function'
+		 ? options.transform(obj.css) 
+		 : options.transform.default(obj.css);
 
 	    if (result) {
 	    	// If transform returns a value, use that instead of the original css.
@@ -510,7 +528,7 @@ module.exports = function (css) {
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../node_modules/raw-loader!../node_modules/postcss-loader/lib??embedded!./styles.css */ "./node_modules/raw-loader/index.js!./node_modules/postcss-loader/lib/index.js?!./src/styles.css");
+var content = __webpack_require__(/*! !../node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!../node_modules/postcss-loader/src??embedded!./styles.css */ "./node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!./node_modules/postcss-loader/src/index.js?!./src/styles.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 

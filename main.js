@@ -77,7 +77,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FwcC5jb21wb25lbnQuY3NzIn0= */"
 
 /***/ }),
 
@@ -88,7 +88,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<br>\n<h1>{{ SONGNAME }}</h1>\n<div class=\"images\">\n  <span class=\"z-depth image\" flex=\"50\"\n      [hidden]=\"!currentImages[0]\" [@fade]=\"imageStates[0]\">\n    <h2>{{ currentCaptions[0] }}</h2>\n    <img *ngFor=\"let i of currentImages[0]\" [src]=\"i\" />\n  </span>\n  <span class=\"z-depth image\" flex=\"50\"\n      [hidden]=\"!currentImages[1]\" [@fade]=\"imageStates[1]\">\n    <h2>{{ currentCaptions[1] }}</h2>\n    <img *ngFor=\"let i of currentImages[1]\" [src]=\"i\" />\n  </span>\n</div>"
+module.exports = "<div> <!--(click)='playBeginnings()'-->\n  <br>\n  <h1 style=\"text-transform: capitalize;\">{{ SONGNAME }}</h1>\n  <div class=\"images\">\n    <span class=\"z-depth image\" flex=\"50\"\n        [hidden]=\"!currentImages[0]\" [@fade]=\"imageStates[0]\">\n      <img *ngFor=\"let i of currentImages[0]\" [src]=\"i\" width=\"21%\"/>\n      <h2>{{ currentCaptions[0] }}</h2>\n    </span>\n    <span class=\"z-depth image\" flex=\"50\"\n        [hidden]=\"!currentImages[1]\" [@fade]=\"imageStates[1]\">\n      <img *ngFor=\"let i of currentImages[1]\" [src]=\"i\" width=\"21%\"/>\n      <h2>{{ currentCaptions[1] }}</h2>\n    </span>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -105,11 +105,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _dead_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dead-api.service */ "./src/app/dead-api.service.ts");
-/* harmony import */ var _dead_feature_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dead-feature.service */ "./src/app/dead-feature.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
 /* harmony import */ var auto_dj__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! auto-dj */ "./node_modules/auto-dj/lib/index.js");
 /* harmony import */ var auto_dj__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(auto_dj__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+/* harmony import */ var _dead_api_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dead-api.service */ "./src/app/dead-api.service.ts");
+/* harmony import */ var _dead_feature_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./dead-feature.service */ "./src/app/dead-feature.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -160,67 +161,158 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
 var TEST = ['https://images-na.ssl-images-amazon.com/images/I/91PMUsUyKzL._SL1500_.jpg',
     'https://images.fineartamerica.com/images-medium-large-5/grateful-dead-fantasy-amanda-paul.jpg',
-    'https://i.ebayimg.com/images/g/alAAAOSw4A5Y2eI9/s-l300.jpg'
-];
+    'https://i.ebayimg.com/images/g/alAAAOSw4A5Y2eI9/s-l300.jpg'];
 var AppComponent = /** @class */ (function () {
-    function AppComponent(apiService, featureService) {
+    //private alignment: Alignment = ALIGNMENT.default;
+    function AppComponent(apiService, featureService, activatedRoute) {
+        var _this = this;
         this.apiService = apiService;
-        this.SONGNAME = 'Goodlovin';
-        this.COUNT = 50;
+        this.activatedRoute = activatedRoute;
+        this.SONGNAME = 'Casey Jones';
+        this.COUNT = 30;
         this.SKIP = 3;
+        this.CHUNK_LENGTH = 60;
+        this.CHUNK_START = 30;
         this.currentImages = [null, null];
         this.currentCaptions = ['', ''];
         this.imageStates = ['out', 'in'];
         this.currentImagesIndex = 0;
-        this.dj = new auto_dj__WEBPACK_IMPORTED_MODULE_4__["AutoDj"](featureService, auto_dj__WEBPACK_IMPORTED_MODULE_4__["DecisionType"].Default, undefined, auto_dj__WEBPACK_IMPORTED_MODULE_4__["TransitionType"].Beatmatch);
+        this.dj = new auto_dj__WEBPACK_IMPORTED_MODULE_4__["AutoDj"]({
+            decisionType: auto_dj__WEBPACK_IMPORTED_MODULE_4__["DecisionType"].Default,
+            defaultTransitionType: auto_dj__WEBPACK_IMPORTED_MODULE_4__["TransitionType"].Crossfade,
+            scheduleAheadTime: 4,
+            loadAheadTime: 6,
+            useWorkers: false
+        });
+        this.activatedRoute.queryParams.subscribe(function (params) {
+            _this.SONGNAME = params['song'] || _this.SONGNAME; // || 'Looks Like Rain';
+            console.log(_this.SONGNAME); // Print the parameter to the console.
+        });
     }
     AppComponent.prototype.ngOnInit = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var song, _a;
-            var _this = this;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0: return [4 /*yield*/, this.dj.isReady()];
                     case 1:
-                        _b.sent();
-                        song = lodash__WEBPACK_IMPORTED_MODULE_0__["toLower"](this.SONGNAME).split(' ').join('');
+                        _c.sent();
                         _a = this;
-                        return [4 /*yield*/, this.apiService.getDiachronicVersionsAudio(song, this.COUNT, this.SKIP)];
+                        return [4 /*yield*/, this.apiService.getEvents()];
                     case 2:
-                        _a.audioUris = (_b.sent());
-                        this.audioUris = this.audioUris.map(function (a) {
-                            return encodeURI(_dead_api_service__WEBPACK_IMPORTED_MODULE_2__["API_URL"] + 'audiochunk?filename=' + a);
-                        });
-                        this.dj.playDjSet(this.audioUris, 12, true); //bars per song, cue point auto*/
-                        this.dj.getTransitionObservable().subscribe(function (transition) {
-                            if (transition && transition.names) {
-                                _this.nextImage(transition.names[0]);
-                            }
-                        });
+                        _a.eventInfos = _c.sent();
+                        if (!this.SONGNAME) return [3 /*break*/, 4];
+                        _b = this;
+                        return [4 /*yield*/, this.apiService
+                                .getDiachronicSongDetails(this.SONGNAME, this.COUNT, this.SKIP)];
+                    case 3:
+                        _b.songDetails = _c.sent();
+                        _c.label = 4;
+                    case 4:
+                        this.playBeginnings();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    AppComponent.prototype.nextImage = function (audioUri) {
+    AppComponent.prototype.playBeginnings = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var info, infoStrings, i;
+            var audioUris, index;
+            var _this = this;
+            return __generator(this, function (_a) {
+                audioUris = lodash__WEBPACK_IMPORTED_MODULE_0__["values"](lodash__WEBPACK_IMPORTED_MODULE_0__["mapValues"](this.songDetails.audio, function (a, r) { return _this.apiService.toChunkUri(r, a[0].filename, _this.CHUNK_START, _this.CHUNK_START + _this.CHUNK_LENGTH); }));
+                //console.log(audioUris)
+                this.dj.playDjSet(audioUris, 12, true, 4); //bars per song, cue point auto
+                index = 1;
+                this.dj.getTransitionObservable().subscribe(function (transition) {
+                    console.log(transition);
+                    if (transition && transition.names) {
+                        _this.nextImage(_this.songDetails.eventIds[index]);
+                        index++;
+                    }
+                });
+                return [2 /*return*/];
+            });
+        });
+    };
+    /*private async playCoherently() {
+      this.SONGNAME = this.alignment.title;
+      console.log(this.SONGNAME)
+      const featureService = new LiveFeatureService();
+      const versionsPlayed: number[] = [];
+      const BARS = 6;
+      const TRANS = 1; //two transition, two alone, two transition
+      const OFFSET = 0;
+      const audioChunks = _.range(0,
+          Math.floor((this.alignment.timeline.length-OFFSET)/(BARS+TRANS)-1)).map(i => {
+        const START = OFFSET+(i*(BARS+TRANS));
+        const starts = this.alignment.timeline[START];
+        const ends = this.alignment.timeline[START+BARS+(2*TRANS)];
+        const versions = _.intersection(
+          ...[starts, ends].map(b => b.map(n => n.version)))
+          .filter(v => !versionsPlayed.includes(v));
+        if (versions.length) {
+          const version = _.sample(versions);
+          //const version = versions[0];
+          versionsPlayed.push(version);
+          const start = starts.filter(n => n.version === version)[0].time;
+          const end = ends.filter(n => n.version === version)[0].time;
+          const audio = this.alignment.versions[version];
+          const audioUri = this.apiService.toLmaUri(audio.split('/')[0], audio.split('/')[1]);
+          /*const audioUri = this.apiService.toChunkUri(
+            audio.split('/')[0], audio.split('/')[1],
+            this.alignment.segments[version][start].start,
+            this.alignment.segments[version][end].start);*
+          const offset = this.alignment.segments[version][start].start;
+          const bars = _.range(start, end+1).map(i =>
+            this.alignment.segments[version][i].start)// - offset);
+          let beats = _.flatten(bars.slice(0,-1).map((b,i) =>
+            _.range(0,4).map(j => b+j*(bars[i+1]-b)/4)));
+          beats = beats.map(b => b / this.alignment.tunings[i]);
+          //console.log(beats[0])
+          featureService.setBeats(audioUri, beats);
+          return audioUri;
+        }
+      }).filter(a => a);
+      this.dj.setFeatureService(featureService);
+      this.dj.playDjSet(audioChunks, BARS+(TRANS*2), false, TRANS);
+  
+      let index = 0;
+      this.dj.getTransitionObservable().subscribe(transition => {
+        console.log(transition)
+        if (transition && transition.names) {
+          //http://archive.org/download/gd1990-09-15.sbd.martman.7746.sbefail.shnf/gd1990-09-15d1t09.mp3
+          const rec = audioChunks[index].split('/').slice(-2)[0];
+          console.log(rec)
+          const eventId = this.eventInfos.filter(i => i.recordings.some(r => r.etreeId === rec))[0];
+          this.nextImage(eventId.id);
+          index++;
+        }
+      });
+    }*/
+    AppComponent.prototype.nextImage = function (eventId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var info, details, infoStrings, i;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.apiService.getEventInfo(audioUri)];
+                    case 0:
+                        info = this.eventInfos.filter(function (e) { return e.id === eventId; })[0];
+                        return [4 /*yield*/, this.apiService.getEventDetails(eventId)];
                     case 1:
-                        info = _a.sent();
-                        infoStrings = [info['date']];
-                        if (info['venue'])
-                            infoStrings.push(info['venue']);
-                        if (info['location'])
-                            infoStrings.push(info['location']);
+                        details = _a.sent();
+                        infoStrings = [info.date];
+                        if (info.venue)
+                            infoStrings.push(info.venue);
+                        if (info.location)
+                            infoStrings.push(info.location);
                         i = this.currentImagesIndex % 2;
                         this.currentCaptions[i] = infoStrings.join(', ');
-                        this.currentImages[i] = info['images'] ? info['images'].slice(0, 3) : undefined;
+                        this.currentImages[i] = lodash__WEBPACK_IMPORTED_MODULE_0__["concat"]([details.venue.thumbnail, details.location.thumbnail], details.artifacts.map(function (a) { return a.thumbnail || a.image; }))
+                            .filter(function (i) { return i; }).slice(0, 4);
                         setTimeout(function () { return _this.toggleState(); }, 1000); //images take time to load!
                         return [2 /*return*/];
                 }
@@ -236,19 +328,19 @@ var AppComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-root',
             template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html"),
-            styles: [__webpack_require__(/*! ./app.component.css */ "./src/app/app.component.css")],
             animations: [
-                Object(_angular_animations__WEBPACK_IMPORTED_MODULE_5__["trigger"])('fade', [
-                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_5__["state"])('in', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_5__["style"])({ 'opacity': '1' })),
-                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_5__["state"])('out', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_5__["style"])({ 'opacity': '0' })),
-                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_5__["transition"])('* <=> *', [
-                        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_5__["animate"])(2000)
+                Object(_angular_animations__WEBPACK_IMPORTED_MODULE_3__["trigger"])('fade', [
+                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_3__["state"])('in', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_3__["style"])({ 'opacity': '1' })),
+                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_3__["state"])('out', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_3__["style"])({ 'opacity': '0' })),
+                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_3__["transition"])('* <=> *', [
+                        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_3__["animate"])(2000)
                     ])
                 ])
-            ]
+            ],
+            styles: [__webpack_require__(/*! ./app.component.css */ "./src/app/app.component.css")]
         }),
-        __metadata("design:paramtypes", [_dead_api_service__WEBPACK_IMPORTED_MODULE_2__["DeadApiService"],
-            _dead_feature_service__WEBPACK_IMPORTED_MODULE_3__["DeadFeatureService"]])
+        __metadata("design:paramtypes", [_dead_api_service__WEBPACK_IMPORTED_MODULE_5__["DeadApiService"],
+            _dead_feature_service__WEBPACK_IMPORTED_MODULE_6__["DeadFeatureService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -273,12 +365,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
 /* harmony import */ var _dead_api_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dead-api.service */ "./src/app/dead-api.service.ts");
 /* harmony import */ var _dead_feature_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dead-feature.service */ "./src/app/dead-feature.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -295,7 +389,8 @@ var AppModule = /** @class */ (function () {
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
-                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_2__["BrowserAnimationsModule"]
+                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_2__["BrowserAnimationsModule"],
+                _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterModule"].forRoot([])
             ],
             providers: [_dead_api_service__WEBPACK_IMPORTED_MODULE_4__["DeadApiService"], _dead_feature_service__WEBPACK_IMPORTED_MODULE_5__["DeadFeatureService"]],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
@@ -312,12 +407,11 @@ var AppModule = /** @class */ (function () {
 /*!*************************************!*\
   !*** ./src/app/dead-api.service.ts ***!
   \*************************************/
-/*! exports provided: API_URL, DeadApiService */
+/*! exports provided: DeadApiService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "API_URL", function() { return API_URL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DeadApiService", function() { return DeadApiService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
@@ -365,9 +459,11 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
     }
 };
 
-var API_URL = "https://grateful-dead-api.herokuapp.com/"; //"http://localhost:8060/";
 var DeadApiService = /** @class */ (function () {
     function DeadApiService() {
+        this.API_URL = "https://grateful-dead-api.herokuapp.com/";
+        //private API_URL = "http://localhost:8060/";
+        this.ARCHIVE_URI = 'http://archive.org/download/';
     }
     DeadApiService.prototype.getEvents = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -376,58 +472,58 @@ var DeadApiService = /** @class */ (function () {
             });
         });
     };
-    DeadApiService.prototype.getVenue = function (eventId) {
+    DeadApiService.prototype.getEventDetails = function (eventId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.getJsonFromApi('venue?event=' + encodeURIComponent(eventId))];
+                return [2 /*return*/, this.getJsonFromApi('details?event=' + encodeURIComponent(eventId))];
             });
         });
     };
-    DeadApiService.prototype.getPosters = function (eventId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.getJsonFromApi('posters?event=' + encodeURIComponent(eventId))];
-            });
-        });
+    DeadApiService.prototype.getLocation = function (locationId) {
+        return this.getJsonFromApi('location?id=' + encodeURIComponent(locationId));
     };
-    DeadApiService.prototype.getTickets = function (eventId) {
-        return this.getJsonFromApi('tickets?event=' + encodeURIComponent(eventId));
-    };
-    DeadApiService.prototype.getLocation = function (eventId) {
-        return this.getJsonFromApi('location?event=' + encodeURIComponent(eventId));
-    };
-    DeadApiService.prototype.getWeather = function (eventId) {
-        return this.getJsonFromApi('weather?event=' + encodeURIComponent(eventId));
+    DeadApiService.prototype.getVenue = function (venueId) {
+        return this.getJsonFromApi('venue?id=' + encodeURIComponent(venueId));
     };
     DeadApiService.prototype.getSetlist = function (eventId) {
         return this.getJsonFromApi('setlist?event=' + encodeURIComponent(eventId));
     };
-    DeadApiService.prototype.getRecordings = function (eventId) {
-        return this.getJsonFromApi('recordings?event=' + encodeURIComponent(eventId));
+    DeadApiService.prototype.getSong = function (songId) {
+        return this.getJsonFromApi('song?id=' + encodeURIComponent(songId));
     };
-    DeadApiService.prototype.getPerformers = function (eventId) {
-        return this.getJsonFromApi('performers?event=' + encodeURIComponent(eventId));
-    };
-    DeadApiService.prototype.getEtreeInfo = function (recordingId) {
-        return this.getJsonFromApi('etreeinfo?recording=' + encodeURIComponent(recordingId));
+    DeadApiService.prototype.getArtistDetails = function (artistId) {
+        return this.getJsonFromApi('artist?id=' + encodeURIComponent(artistId));
     };
     DeadApiService.prototype.getFeatureSummary = function (audioUri) {
         return this.getJsonFromApi('featuresummary?audiouri=' + encodeURIComponent(audioUri));
     };
-    DeadApiService.prototype.getDiachronicVersionsAudio = function (songName, count, skip) {
-        if (count === void 0) { count = 100; }
+    DeadApiService.prototype.getEventInfo = function (audioUri) {
+        return this.getJsonFromApi('eventinfo?audiouri=' + encodeURIComponent(audioUri));
+    };
+    DeadApiService.prototype.getDiachronicSongDetails = function (songName, count, skip) {
+        if (count === void 0) { count = 10; }
         if (skip === void 0) { skip = 0; }
         return this.getJsonFromApi('diachronic?songname=' + encodeURIComponent(songName)
             + "&count=" + count + "&skip=" + skip);
     };
-    DeadApiService.prototype.getEventInfo = function (audioUri) {
-        return this.getJsonFromApi('eventinfo?audiouri=' + encodeURIComponent(audioUri));
+    DeadApiService.prototype.toChunkUri = function (recordingId, filename, fromSecond, toSecond) {
+        var audioUri = this.ARCHIVE_URI + recordingId + '/' + filename;
+        var segmentDef = fromSecond != null && toSecond != null ?
+            '&fromsecond=' + fromSecond + '&tosecond=' + toSecond : '';
+        return encodeURI(this.API_URL + 'audiochunk?filename=' + audioUri + segmentDef);
+    };
+    DeadApiService.prototype.toLmaUri = function (recordingId, filename) {
+        return this.ARCHIVE_URI + recordingId + '/' + filename;
     };
     DeadApiService.prototype.getJsonFromApi = function (path) {
-        return fetch(API_URL + path)
-            .then(function (r) { return r.text(); })
-            .then(function (t) { return JSON.parse(t); })
-            .catch(function (e) { return console.log(e); });
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, fetch(this.API_URL + path)
+                        .then(function (r) { return r.text(); })
+                        .then(function (t) { return JSON.parse(t); })
+                        .catch(function (e) { return console.log(e); })];
+            });
+        });
     };
     DeadApiService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -506,29 +602,35 @@ var DeadFeatureService = /** @class */ (function () {
     DeadFeatureService.prototype.getBeats = function (audioUri) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getFeatures(audioUri)];
-                    case 1: return [2 /*return*/, (_a.sent())["beats"]];
-                }
+                return [2 /*return*/, this.getFeature(audioUri, "beats")];
             });
         });
     };
     DeadFeatureService.prototype.getKeys = function (audioUri) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getFeatures(audioUri)];
-                    case 1: return [2 /*return*/, (_a.sent())["key"]];
-                }
+                return [2 /*return*/, this.getFeature(audioUri, "key")];
             });
         });
     };
     DeadFeatureService.prototype.getLoudnesses = function (audioUri) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
+                return [2 /*return*/, this.getFeature(audioUri, "loudness")];
+            });
+        });
+    };
+    DeadFeatureService.prototype.getFeature = function (audioUri, featureName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var features;
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getFeatures(audioUri)];
-                    case 1: return [2 /*return*/, (_a.sent())["loudness"]];
+                    case 1:
+                        features = _a.sent();
+                        if (features)
+                            return [2 /*return*/, features[featureName]];
+                        return [2 /*return*/];
                 }
             });
         });
