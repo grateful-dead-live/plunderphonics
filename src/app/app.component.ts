@@ -12,7 +12,8 @@ import { SongDetails, DeadEventInfo } from './types';
 //import * as ALIGNMENT from '../assets/brokedown palace-output.json';
 //import * as ALIGNMENT from '../assets/casey jones-output.json';
 //import * as ALIGNMENT from '../assets/china cat sunflower-output.json';
-import * as ALIGNMENT from '../assets/china doll-output.json';
+//import * as ALIGNMENT from '../assets/china doll-output.json';
+//////import * as ALIGNMENT from '../assets/cosmic charlie-output.json';
 
 interface Alignment {
   title: string,
@@ -59,9 +60,9 @@ export class AppComponent implements OnInit {
   //private SONGNAME = 'Jack Straw';
   //private SONGNAME = 'Truckin';
   private eventInfos: DeadEventInfo[];
-  private SONGNAME;
+  private SONGNAME = 'Casey Jones';
   private COUNT = 30;
-  private SKIP = 2;
+  private SKIP = 3;
   private CHUNK_LENGTH = 60;
   private CHUNK_START = 30;
   private dj: AutoDj;
@@ -70,15 +71,16 @@ export class AppComponent implements OnInit {
   protected currentCaptions: string[] = ['', ''];
   protected imageStates: string[] = ['out', 'in']
   protected currentImagesIndex = 0;
-  private alignment: Alignment = ALIGNMENT.default;
+  //private alignment: Alignment = ALIGNMENT.default;
 
   constructor(private apiService: DeadApiService,
       featureService: DeadFeatureService, private activatedRoute: ActivatedRoute) {
-    this.dj = new AutoDj({featureService: featureService,
+    this.dj = new AutoDj({//featureService: featureService,
         decisionType: DecisionType.Default,
         defaultTransitionType: TransitionType.Crossfade,
         scheduleAheadTime: 4,
         loadAheadTime: 6,
+        useWorkers: false
       });
     this.activatedRoute.queryParams.subscribe(params => {
         this.SONGNAME = params['song'] || this.SONGNAME// || 'Looks Like Rain';
@@ -89,21 +91,22 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     await this.dj.isReady();
     this.eventInfos = await this.apiService.getEvents();
+    console.log(this.eventInfos)
     //const song = _.toLower(this.SONGNAME).split(' ').join('');
     if (this.SONGNAME) {
       this.songDetails = await this.apiService
         .getDiachronicSongDetails(this.SONGNAME, this.COUNT, this.SKIP);
     }
-    //this.playBeginnings();
-    this.playCoherently();
+    this.playBeginnings();
+    //this.playCoherently();
   }
-  
+
   private async playBeginnings() {
     const audioUris = _.values(_.mapValues(this.songDetails.audio,
       (a,r) => this.apiService.toChunkUri(r, a[0].filename, this.CHUNK_START,
         this.CHUNK_START+this.CHUNK_LENGTH)));
     //console.log(audioUris)
-    this.dj.playDjSet(audioUris, 12, true, 6); //bars per song, cue point auto
+    this.dj.playDjSet(audioUris, 12, true, 4); //bars per song, cue point auto
     //this.dj.transitionToTrack(audioUris[0]);
     let index = 1;
     this.dj.getTransitionObservable().subscribe(transition => {
@@ -114,8 +117,8 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  
-  private async playCoherently() {
+
+  /*private async playCoherently() {
     this.SONGNAME = this.alignment.title;
     console.log(this.SONGNAME)
     const featureService = new LiveFeatureService();
@@ -131,29 +134,32 @@ export class AppComponent implements OnInit {
       const versions = _.intersection(
         ...[starts, ends].map(b => b.map(n => n.version)))
         .filter(v => !versionsPlayed.includes(v));
-      const version = _.sample(versions);
-      versionsPlayed.push(version);
-      const start = starts.filter(n => n.version === version)[0].time;
-      const end = ends.filter(n => n.version === version)[0].time;
-      const audio = this.alignment.versions[version];
-      const audioUri = this.apiService.toLmaUri(audio.split('/')[0], audio.split('/')[1]);
-      /*const audioUri = this.apiService.toChunkUri(
-        audio.split('/')[0], audio.split('/')[1],
-        this.alignment.segments[version][start].start,
-        this.alignment.segments[version][end].start);*/
-      const offset = this.alignment.segments[version][start].start;
-      const bars = _.range(start, end+1).map(i =>
-        this.alignment.segments[version][i].start)// - offset);
-      let beats = _.flatten(bars.slice(0,-1).map((b,i) =>
-        _.range(0,4).map(j => b+j*(bars[i+1]-b)/4)));
-      beats = beats.map(b => b / this.alignment.tunings[i]);
-      console.log(beats[0])
-      featureService.setBeats(audioUri, beats);
-      return audioUri;
-    });
+      if (versions.length) {
+        const version = _.sample(versions);
+        //const version = versions[0];
+        versionsPlayed.push(version);
+        const start = starts.filter(n => n.version === version)[0].time;
+        const end = ends.filter(n => n.version === version)[0].time;
+        const audio = this.alignment.versions[version];
+        const audioUri = this.apiService.toLmaUri(audio.split('/')[0], audio.split('/')[1]);
+        /*const audioUri = this.apiService.toChunkUri(
+          audio.split('/')[0], audio.split('/')[1],
+          this.alignment.segments[version][start].start,
+          this.alignment.segments[version][end].start);*
+        const offset = this.alignment.segments[version][start].start;
+        const bars = _.range(start, end+1).map(i =>
+          this.alignment.segments[version][i].start)// - offset);
+        let beats = _.flatten(bars.slice(0,-1).map((b,i) =>
+          _.range(0,4).map(j => b+j*(bars[i+1]-b)/4)));
+        beats = beats.map(b => b / this.alignment.tunings[i]);
+        //console.log(beats[0])
+        featureService.setBeats(audioUri, beats);
+        return audioUri;
+      }
+    }).filter(a => a);
     this.dj.setFeatureService(featureService);
     this.dj.playDjSet(audioChunks, BARS+(TRANS*2), false, TRANS);
-    
+
     let index = 0;
     this.dj.getTransitionObservable().subscribe(transition => {
       console.log(transition)
@@ -166,7 +172,7 @@ export class AppComponent implements OnInit {
         index++;
       }
     });
-  }
+  }*/
 
   protected async nextImage(eventId: string) {
     const info = this.eventInfos.filter(e => e.id === eventId)[0];

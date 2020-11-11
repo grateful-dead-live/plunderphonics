@@ -5,7 +5,7 @@
     "ng": "ng",
     "postinstall": "npm dedupe && rm -R node_modules/piper-js/node_modules/rxjs",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --base-href https://grateful-dead-live.github.io/plunderphonics/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

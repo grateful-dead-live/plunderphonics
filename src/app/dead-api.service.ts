@@ -11,8 +11,8 @@ export interface Recording {
 @Injectable()
 export class DeadApiService {
 
-  //private API_URL = "https://grateful-dead-api.herokuapp.com/";
-  private API_URL = "http://localhost:8060/";
+  private API_URL = "https://grateful-dead-api.herokuapp.com/";
+  //private API_URL = "http://localhost:8060/";
   private ARCHIVE_URI = 'http://archive.org/download/';
 
   constructor() {}
