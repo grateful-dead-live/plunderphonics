@@ -461,7 +461,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 var DeadApiService = /** @class */ (function () {
     function DeadApiService() {
-        this.API_URL = "https://dead.ddnsfree.com/"//"https://grateful-dead-api.herokuapp.com/";
+        this.API_URL = "https://grateful-dead-api.herokuapp.com/";
         //private API_URL = "http://localhost:8060/";
         this.ARCHIVE_URI = 'http://archive.org/download/';
     }
