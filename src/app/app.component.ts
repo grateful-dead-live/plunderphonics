@@ -6,9 +6,10 @@ import { AutoDj, DecisionType, TransitionType } from 'auto-dj';
 import { DeadApiService } from './dead-api.service';
 import { DeadFeatureService } from './dead-feature.service';
 import { LiveFeatureService } from './live-feature.service';
+import { PlayerService } from './stream-player.service';
 import { SongDetails, DeadEventInfo } from './types';
 //import * as ALIGNMENT from '../assets/meandmyuncle.json';
-//import * as ALIGNMENT from '../assets/box of rain-output.json';
+import ALIGNMENT from '../assets/box of rain-output.json';
 //import * as ALIGNMENT from '../assets/brokedown palace-output.json';
 //import * as ALIGNMENT from '../assets/casey jones-output.json';
 //import * as ALIGNMENT from '../assets/china cat sunflower-output.json';
@@ -60,7 +61,7 @@ export class AppComponent implements OnInit {
   //private SONGNAME = 'Jack Straw';
   //private SONGNAME = 'Truckin';
   private eventInfos: DeadEventInfo[];
-  private SONGNAME = 'Casey Jones';
+  private SONGNAME = 'Box of Rain';
   private COUNT = 30;
   private SKIP = 3;
   private CHUNK_LENGTH = 60;
@@ -71,7 +72,8 @@ export class AppComponent implements OnInit {
   protected currentCaptions: string[] = ['', ''];
   protected imageStates: string[] = ['out', 'in']
   protected currentImagesIndex = 0;
-  //private alignment: Alignment = ALIGNMENT.default;
+  private alignment: Alignment = ALIGNMENT;
+  private player: PlayerService = new PlayerService();
 
   constructor(private apiService: DeadApiService,
       featureService: DeadFeatureService, private activatedRoute: ActivatedRoute) {
@@ -90,32 +92,50 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     await this.dj.isReady();
-    this.eventInfos = await this.apiService.getEvents();
-    console.log(this.eventInfos)
+    //this.eventInfos = await this.apiService.getEvents();
+    //console.log(this.eventInfos)
     //const song = _.toLower(this.SONGNAME).split(' ').join('');
     if (this.SONGNAME) {
       this.songDetails = await this.apiService
         .getDiachronicSongDetails(this.SONGNAME, this.COUNT, this.SKIP);
     }
-    this.playBeginnings();
-    //this.playCoherently();
   }
 
-  private async playBeginnings() {
-    const audioUris = _.values(_.mapValues(this.songDetails.audio,
-      (a,r) => this.apiService.toChunkUri(r, a[0].filename, this.CHUNK_START,
-        this.CHUNK_START+this.CHUNK_LENGTH)));
-    //console.log(audioUris)
-    this.dj.playDjSet(audioUris, 12, true, 4); //bars per song, cue point auto
-    //this.dj.transitionToTrack(audioUris[0]);
-    let index = 1;
-    this.dj.getTransitionObservable().subscribe(transition => {
-      console.log(transition)
-      if (transition && transition.names) {
-        this.nextImage(this.songDetails.eventIds[index]);
-        index++;
+  private async streamCoherently() {
+    console.log("STREAM", this.alignment)
+    this.SONGNAME = this.alignment.title;
+    console.log(this.SONGNAME)
+    const featureService = new LiveFeatureService();
+    const versionsPlayed: number[] = [];
+    const BARS = 2;
+    const TRANS = 1; //two transition, two alone, two transition
+    const OFFSET = 0;
+    const segments = _.range(0,
+        Math.floor((this.alignment.timeline.length-OFFSET)/(BARS+TRANS)-1)).map(i => {
+      const START = OFFSET+(i*(BARS+TRANS));
+      const starts = this.alignment.timeline[START];
+      const ends = this.alignment.timeline[START+BARS+(2*TRANS)];
+      const versions = _.intersection(
+        ...[starts, ends].map(b => b.map(n => n.version)))
+        .filter(v => !versionsPlayed.includes(v));
+      if (versions.length) {
+        const version = _.sample(versions);
+        versionsPlayed.push(version);
+        const start = starts.filter(n => n.version === version)[0].time;
+        const end = ends.filter(n => n.version === version)[0].time;
+        const audio = this.alignment.versions[version];
+        const audioUri = this.apiService.toLmaUri(audio.split('/')[0], audio.split('/')[1]);
+        const offset = this.alignment.segments[version][start].start;
+        const bars = _.range(start, end+1).map(i =>
+          this.alignment.segments[version][i].start)// - offset);
+        let beats = _.flatten(bars.slice(0,-1).map((b,i) =>
+          _.range(0,4).map(j => b+j*(bars[i+1]-b)/4)));
+        beats = beats.map(b => b / this.alignment.tunings[i]);
+        //console.log(beats[0])
+        return {uri: audioUri, beats: beats};
       }
-    });
+    }).filter(a => a);
+    this.player.play(segments);
   }
 
   /*private async playCoherently() {
